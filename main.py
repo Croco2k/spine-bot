@@ -1,5 +1,5 @@
 import logging
-from openai import OpenAI
+import openai
 import os
 from aiogram import Bot, Dispatcher, types, executor
 from aiogram.dispatcher.middlewares import BaseMiddleware
@@ -11,7 +11,6 @@ from datetime import datetime
 API_TOKEN = os.getenv("BOT_TOKEN")
 USER_CHAT_ID = os.getenv("USER_CHAT_ID")
 
-client = OpenAI()  # OpenAI API key подтягивается из OPENAI_API_KEY автоматически
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=API_TOKEN)
@@ -114,7 +113,7 @@ async def handle_any(message: types.Message):
     await message.answer("Принял, босс ✅ Отправляю тренеру...")
 
     try:
-        response = client.chat.completions.create(
+        response = openai.chat.completions.create(
             model="gpt-4",
             messages=[
                 {"role": "system", "content": "Ты AI-тренер по восстановлению позвоночника. Отвечай кратко, дружелюбно и точно."},
