@@ -9,11 +9,9 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from datetime import datetime
 
 API_TOKEN = os.getenv("BOT_TOKEN")
-TRAINER_CHAT_ID = os.getenv("TRAINER_CHAT_ID")
 USER_CHAT_ID = os.getenv("USER_CHAT_ID")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI()  # OpenAI API key подтягивается из OPENAI_API_KEY автоматически
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=API_TOKEN)
