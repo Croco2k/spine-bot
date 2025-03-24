@@ -1,5 +1,5 @@
 import logging
-import openai
+from openai import OpenAI
 import os
 from aiogram import Bot, Dispatcher, types, executor
 from aiogram.dispatcher.middlewares import BaseMiddleware
@@ -13,7 +13,7 @@ TRAINER_CHAT_ID = os.getenv("TRAINER_CHAT_ID")
 USER_CHAT_ID = os.getenv("USER_CHAT_ID")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-openai.api_key = OPENAI_API_KEY
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=API_TOKEN)
@@ -116,15 +116,14 @@ async def handle_any(message: types.Message):
     await message.answer("Принял, босс ✅ Отправляю тренеру...")
 
     try:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-4",
             messages=[
-                {"role": "system",
-                 "content": "Ты AI-тренер по восстановлению позвоночника. Отвечай кратко, дружелюбно и точно."},
-                {"role": "user", "content": user_input},
+                {"role": "system", "content": "Ты AI-тренер по восстановлению позвоночника. Отвечай кратко, дружелюбно и точно."},
+                {"role": "user", "content": user_input}
             ]
         )
-        reply = response.choices[0].message.content
+    reply = response.choices[0].message.content
     except Exception as e:
         reply = f"Ошибка от тренера: {e}"
 
