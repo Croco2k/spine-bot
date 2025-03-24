@@ -123,7 +123,7 @@ async def handle_any(message: types.Message):
                 {"role": "user", "content": user_input}
             ]
         )
-    reply = response.choices[0].message.content
+        reply = response.choices[0].message.content
     except Exception as e:
         reply = f"Ошибка от тренера: {e}"
 
